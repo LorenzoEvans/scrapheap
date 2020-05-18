@@ -16,7 +16,28 @@ extern crate rocket_contrib;
 use chrono::prelude::*;
 // 7. Brings all exported members from chrono (DateTime, UTC), into local scope.
 use rocket::response::content::Html;
-// 8. This brings the Html type into scope,
+// 8. This brings the Html type into scope, for valid header creation.
 use rocket_contrib::json::Json;
-
+// 9. Bring Json into local scope, enabling rocket to create http responses from
+//    types that implement serde::Serialize.
 #[derive(Serialize)]
+// 10. Automatically generate a string representation of a struct.
+struct Timestamp { // 11. Initialize Timestamp structure.
+    time: String, // 12. Add time field of type `String` to Timestamp.
+}
+
+#[get("/")] // Custom rocket syntax connecting an http path to a function.
+fn index() -> Html<String> {
+    let content: &str "
+    <h1>Hello, RIA!</h1>
+    <p>What is the <a href=\"/now\">time</a>?</p>
+    ";
+    let content_as_string = String::from(content);
+    Html(content_as_string);
+};
+#[get("/now")]
+fn now() -> Json<Timestamp> {
+    let now: DateTime<Utc> = Utc::now();
+    let timestamp = Timestamp { t: now.to_rfc3339()
+    Json(timestamp)}
+}
