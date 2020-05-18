@@ -47,4 +47,4 @@ fn now() -> Json<Timestamp> { // 17. Return a timestamp within a Json.
 fn main() {
     rocket::ignite().mount("/", routes![index, now])
         .launch();
-}
+} 
